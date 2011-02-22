@@ -3,10 +3,11 @@ package Cache::Isolator;
 use strict;
 use warnings;
 use Carp;
+use Try::Tiny;
 use Time::HiRes;
 use List::Util qw/shuffle/;
 use Class::Accessor::Lite (
-    ro  => [ qw(cache interval timeout concurrency) ],
+    ro  => [ qw(cache interval timeout concurrency trial) ],
 );
 
 our $VERSION = '0.01';
@@ -39,13 +40,15 @@ sub get_or_set {
     TRYLOOP: while  ( 1 ) {
         $value = $self->cache->get($key);
         last TRYLOOP if $value;
-        
+
+        $try++;
         my @lockkeys = map { $key .":lock:". $_ } shuffle 1..$self->concurrency;
         foreach my $lockkey ( @lockkeys ) {
-            $try++;
             my $locked = $self->cache->add($lockkey, 1, $self->timeout );
             if ( $locked ) {
                 try {
+                    $value = $self->cache->get($key);
+                    return 1 if $value;
                     $value = $cb->();
                     $self->cache->set( $key, $value, $expires );
                 }
@@ -57,8 +60,8 @@ sub get_or_set {
                 };
                 last TRYLOOP;
             }
-            die "timeout" if $self->trial > 0 && $try >= $self->trial;
         }
+        die "reached max trial count" if $self->trial > 0 && $try >= $self->trial;
         Time::HiRes::sleep( $self->interval );
     }
     return $value;
@@ -93,7 +96,9 @@ Cache::Isolator - Controls concurrency of operation when cache misses occurred.
 
 =head1 DESCRIPTION
 
-Cache::Isolator is
+Cache::Isolator is transaction and concurrency controls manager for cache systems. 
+Many cache systems Thundering Herd have a problem. Once the cache expires, the concentration of access to the database and increases the load on the system.
+Cache::Isolator can control the concentration of load.
 
 =head1 METHODS
 
