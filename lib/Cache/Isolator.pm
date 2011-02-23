@@ -102,7 +102,7 @@ __END__
 
 =head1 NAME
 
-Cache::Isolator - Controls concurrency of operation when cache misses occurred.
+Cache::Isolator - transaction and concurrency manager of cache systems.
 
 =head1 SYNOPSIS
 
@@ -125,9 +125,8 @@ Cache::Isolator - Controls concurrency of operation when cache misses occurred.
 
 =head1 DESCRIPTION
 
-Cache::Isolator is transaction and concurrency controls manager for cache systems. 
-Many cache systems have Thundering Herd  problem. 
-Many cache systems  have a Thundering Herd problem. If a cache has expired, concentration of access to the database may happen. This will cause a system failure.
+Cache::Isolator is transaction and concurrency manager of cache systems. 
+Many cache systems have Thundering Herd problem. If a cache has expired, concentration of access to the database may happen. This will cause a system failure.
 Cache::Isolator can control the concentration of load.
 
 =head1 METHODS
