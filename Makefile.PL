@@ -18,5 +18,4 @@ test_requires 'File::Which';
 test_requires 'Proc::Guard';
 
 auto_set_repository;
-auto_include;
 WriteAll;
