@@ -166,7 +166,7 @@ Optional. The seconds until lock becomes released. Defaults to 30 seconds.
 Optional. if early_expires_ratio was set to greater than zero, Cache::Isolator stores to duplicate the cache. One of them is set to expire earlier than normal. Cache::Isolator gets the cache has been set to expire early in the specified percentage. This feature can prevent the cache from disappearing all together. Defaults is "0".
 
   my $cache = Cache::Isolator->new(
-      early_expires_ratio => 10, # This means 1/10
+      early_expires_ratio => 10, # This means 1/10 ratio
   );
 
 =item expires_before
