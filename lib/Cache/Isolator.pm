@@ -126,8 +126,7 @@ Cache::Isolator - transaction and concurrency manager of cache systems.
 =head1 DESCRIPTION
 
 Cache::Isolator is transaction and concurrency manager of cache systems. 
-Many cache systems have Thundering Herd problem. If a cache has expired, concentration of access to the database may happen. This will cause a system failure.
-Cache::Isolator can control the concentration of load.
+Many cache systems have Thundering Herd problem. If a cache has expired, concentration of access to the database may happen. This will cause a system failure. Cache::Isolator can control the concentration of load.
 
 =head1 METHODS
 
