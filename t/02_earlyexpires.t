@@ -15,7 +15,9 @@ skip_all_unless_exists 'memcached';
 
 sub run_memcached_server {
     my $port = shift;
-    my $proc = proc_guard( scalar which('memcached'), '-p', $port, '-U', 0 );
+    my @memcached = (scalar which('memcached'), '-p', $port, '-U', 0);
+    push @memcached, '-u', 'nobody' if $> == 0; #root
+    my $proc = proc_guard( @memcached );
     wait_port($port);
     return $proc;
 }
