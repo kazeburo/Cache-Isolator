@@ -10,7 +10,7 @@ use Class::Accessor::Lite (
     ro  => [ qw(cache interval timeout concurrency trial early_expires_ratio expires_before) ],
 );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new {
     my $class = shift;
